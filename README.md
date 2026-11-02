@@ -18,7 +18,7 @@ and band-limits it; an ESP32 samples it at 250 Hz, runs a 1024-point FFT, fuses 
 live telemetry over WebSockets to a browser dashboard.
 
 > Built as the *Project Exhibition – I* project (B.Tech ECE, VIT Bhopal University, October 2026).
-> Full write-up: [`docs/report/Project_Exhibition_1_Report.pdf`](docs/report/Project_Exhibition_1_Report.pdf).
+> Full write-up: [`docs/report/Project_Exhibition_1_Report_updated.pdf'.
 
 > [!WARNING]
 > MachineSense is an educational prototype. It is **not a medical device** and must not be used for diagnosis,

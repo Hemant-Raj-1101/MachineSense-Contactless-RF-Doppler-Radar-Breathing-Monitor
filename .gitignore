@@ -1,0 +1,14 @@
+# PlatformIO / build
+.pio/
+.vscode/
+.idea/
+# Secrets - never commit
+firmware/include/secrets.h
+secrets.h
+# Python
+__pycache__/
+*.pyc
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MachineSense | Radar Detection System</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         LOADING OVERLAY
+         ========================================================= -->
+
+    <div
+        class="loading-overlay hidden"
+        id="loading-overlay"
+    >
+
+        <div class="loading-box">
+
+            <div class="loading-spinner"></div>
+
+            <div class="loading-title">
+                MACHINESENSE
+            </div>
+
+            <div
+                class="loading-status"
+                id="loading-status"
+            >
+                Initializing...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         SETUP OVERLAY
+         ========================================================= -->
+
+    <div
+        class="setup-overlay"
+        id="setup-overlay"
+    >
+
+        <div class="setup-box">
+
+            <div class="setup-title">
+                MACHINESENSE
+            </div>
+
+            <div class="setup-description">
+                Microwave radar human detection
+                and breathing monitoring system.
+            </div>
+
+            <label
+                class="input-label"
+                for="ip-input"
+            >
+                ESP32 HOSTNAME / IP
+            </label>
+
+            <input
+                class="ip-input"
+                id="ip-input"
+                type="text"
+                value="machinesense.local"
+                placeholder="machinesense.local or 192.168.x.x"
+                autocomplete="off"
+                spellcheck="false"
+            >
+
+            <button
+                class="connect-btn"
+                id="connect-btn"
+            >
+                CONNECT TO MACHINESENSE
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         CALIBRATION OVERLAY
+         ========================================================= -->
+
+    <div
+        class="calibration-overlay hidden"
+        id="calibration-overlay"
+    >
+
+        <div class="calibration-box">
+
+            <div class="calibration-icon">
+                ◉
+            </div>
+
+            <div class="calibration-title">
+                SYSTEM CALIBRATION
+            </div>
+
+            <div class="calibration-subtitle">
+                Establishing radar noise floor
+            </div>
+
+            <div class="calibration-progress">
+
+                <div
+                    class="calibration-progress-bar"
+                    id="calibration-progress-bar"
+                ></div>
+
+            </div>
+
+            <div
+                class="calibration-timer"
+                id="calibration-timer"
+            >
+                ANALYZING NOISE FLOOR — 15s REMAINING
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         RED ALERT VIGNETTE
+         ========================================================= -->
+
+    <div
+        class="vignette-overlay"
+        id="vignette-overlay"
+    ></div>
+
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                ◈
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    MACHINESENSE
+                </div>
+
+                <div class="brand-subtitle">
+                    MICROWAVE RADAR MONITORING SYSTEM
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="connection-status">
+
+            <span
+                class="connection-dot"
+                id="connection-dot"
+            ></span>
+
+            <span
+                class="connection-label"
+                id="connection-label"
+            >
+                OFFLINE
+            </span>
+
+            <span class="uptime-label">
+                UPTIME:
+                <span id="header-uptime">
+                    00:00:00
+                </span>
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         DASHBOARD
+         ========================================================= -->
+
+    <main
+        class="dashboard"
+        id="dashboard"
+    >
+
+        <!-- =====================================================
+             SYSTEM STATUS
+             ===================================================== -->
+
+        <section
+            class="status-display standby"
+            id="status-display"
+        >
+
+            <div
+                class="status-icon"
+                id="status-icon"
+            ></div>
+
+            <div>
+
+                <div
+                    class="status-label"
+                    id="status-label"
+                >
+                    MONITORING
+                </div>
+
+                <div
+                    class="status-sublabel"
+                    id="status-sublabel"
+                >
+                    System standing by
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             STATISTICS
+             ===================================================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-card__label">
+                    BREATHING FREQUENCY
+                </div>
+
+                <div
+                    class="stat-card__value"
+                    id="stat-breathing"
+                >
+                    --
+                </div>
+
+                <span class="stat-card__unit">
+                    Hz
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-card__label">
+                    HEARTBEAT FREQUENCY
+                </div>
+
+                <div class="stat-card__value" id="stat-heart-frequency">
+                    --
+                </div>
+
+                <span class="stat-card__unit">Hz</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-card__label">
+                    HEART RATE
+                </div>
+
+                <div class="stat-card__value" id="stat-heart-bpm">
+                    -- <span class="stat-card__unit">BPM</span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-card__label">
+                    BREATHING RATE
+                </div>
+
+                <div
+                    class="stat-card__value"
+                    id="stat-breath-bpm"
+                >
+                    --
+                    <span class="stat-card__unit">
+                        BPM
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-card__label">
+                    HUMAN DETECTION ALERTS
+                </div>
+
+                <div
+                    class="stat-card__value"
+                    id="stat-alerts"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BREATHING FREQUENCY
+             ===================================================== -->
+
+        <section class="panel">
+
+            <div class="panel__title">
+
+                <span class="panel__dot"></span>
+
+                BREATHING FREQUENCY — LIVE
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="breathing-chart"
+                ></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EVENT LOG
+             ===================================================== -->
+
+        <section class="panel event-log-panel">
+
+            <div class="panel__title">
+
+                <span class="panel__dot"></span>
+
+                MachineSense Event Log
+
+            </div>
+
+            <div
+                class="event-log"
+                id="event-log"
+            >
+
+                <div class="event-log__entry">
+
+                    <span class="event-log__time">
+                        --:--:--
+                    </span>
+
+                    <span class="event-log__message">
+                        Awaiting MachineSense connection...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

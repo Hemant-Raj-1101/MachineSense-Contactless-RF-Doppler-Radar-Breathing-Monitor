@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "MachineSense: Contactless Radio-Frequency Doppler Radar System for Real-Time Breathing Rate Monitoring"
+type: software
+authors:
+  - given-names: "Hemant"
+    family-names: "Raj"
+  - given-names: "Harsh"
+date-released: 2026-11-01
+abstract: >-
+  HB100 Doppler radar, two-stage LM358 analog front-end and an ESP32 (FreeRTOS)
+  running FFT-based breathing-rate estimation and presence detection with a
+  WebSocket dashboard. Project Exhibition - I, VIT Bhopal University.
+keywords: [doppler radar, HB100, ESP32, FreeRTOS, vital signs, breathing rate]

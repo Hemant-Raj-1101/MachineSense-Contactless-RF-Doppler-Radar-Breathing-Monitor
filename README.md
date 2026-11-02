@@ -1,6 +1,6 @@
 <div align="center">
 
-# MachineSense
+# MachineSense: Contactless Radio-Frequency Doppler Radar System for Real-Time Breathing Rate Monitoring
 
 ### Non-contact RF vital-sign and presence monitor — HB100 Doppler radar + ESP32 + FreeRTOS
 
@@ -134,7 +134,7 @@ Install [PlatformIO](https://platformio.org/install), then:
 
 ```bash
 git clone https://github.com/YOUR_GITHUB_USERNAME/MachineSense.git
-cd MachineSense/firmware
+cd MachineSense-Contactless-RF-Doppler-Radar-Breathing-Monitor/firmware
 
 cp include/secrets.h.example include/secrets.h   # then edit: Wi-Fi SSID / password
 pio run -t upload
